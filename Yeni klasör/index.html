@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Miniğime 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+
+body{
+    background:linear-gradient(270deg,#ff5fa2,#ff9a9e,#ff3d7f);
+    background-size:600% 600%;
+    animation:bgMove 12s ease infinite;
+    overflow:hidden;
+    color:white;
+}
+
+@keyframes bgMove{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+.slide{
+    display:none;
+    height:100vh;
+    width:100%;
+    position:absolute;
+    justify-content:center;
+    align-items:center;
+}
+
+.slide.active{display:flex}
+
+.card{
+    background:rgba(0,0,0,0.5);
+    backdrop-filter:blur(8px);
+    border-radius:30px;
+    padding:35px;
+    max-width:720px;
+    text-align:center;
+    box-shadow:0 30px 60px rgba(0,0,0,0.5);
+    animation:pop 0.8s ease;
+}
+
+@keyframes pop{
+    from{transform:scale(0.85);opacity:0}
+    to{transform:scale(1);opacity:1}
+}
+
+h1{
+    font-family:'Pacifico',cursive;
+    font-size:2.7rem;
+    margin-bottom:18px;
+}
+
+p{
+    font-size:1.25rem;
+    line-height:1.8;
+    margin-bottom:22px;
+    white-space:pre-line;
+}
+
+img{
+    width:100%;
+    max-height:360px;
+    object-fit:cover;
+    border-radius:22px;
+    margin-bottom:15px;
+}
+
+button{
+    padding:15px 34px;
+    border-radius:40px;
+    border:none;
+    font-size:1.1rem;
+    cursor:pointer;
+    font-weight:600;
+    transition:0.3s;
+}
+
+button:hover{transform:scale(1.1)}
+
+.next{background:white;color:#ff3d7f}
+#yes{background:#ff005d;color:white;font-size:1.4rem}
+#no{
+    background:black;
+    color:red;
+    border:3px solid red;
+    box-shadow:0 0 20px red;
+    position:absolute;
+    cursor:not-allowed;
+}
+
+.heart{
+    position:absolute;
+    pointer-events:none;
+    animation:float 8s linear infinite;
+}
+
+@keyframes float{
+    from{transform:translateY(100vh) scale(0.5)}
+    to{transform:translateY(-10vh) scale(1.2)}
+}
+
+.progress{
+    position:fixed;
+    bottom:15px;
+    width:100%;
+    text-align:center;
+    font-size:1.2rem;
+    opacity:0.7;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+<source src="music.mp3">
+</audio>
+
+<div class="progress" id="progress"></div>
+
+<!-- SLIDES -->
+
+<div class="slide active">
+<div class="card">
+<h1>Miniğim 💖</h1>
+<p class="type">
+Bu site kalbimden sana…  
+Okudukça beni hissedeceksin.
+</p>
+<button class="next" onclick="start()">Miniğim buna bas</button>
+</div>
+</div>
+
+<div class="slide">
+<div class="card">
+<h1>Biz ❤️</h1>
+<img src="foto1.jpg">
+<p class="type">
+Bu fotoğrafta sadece iki insan yok…  
+Birbirini bulan iki kalp var.
+</p>
+<button class="next" onclick="next()">Devam</button>
+</div>
+</div>
+
+<div class="slide">
+<div class="card">
+<h1>Yan Yana 🫶</h1>
+<img src="foto2.jpg">
+<p class="type">
+Elini tuttuğumda dünya duruyor.  
+Ben sadece seni seçiyorum.
+</p>
+<button class="next" onclick="next()">Devam</button>
+</div>
+</div>
+
+<div class="slide">
+<div class="card">
+<h1>Bizim Hikayemiz 🌸</h1>
+<p class="type">
+24 Haziran 2025’ten beri  
+<span id="days"></span> gündür seni seviyorum.  
+Ve bu sayı asla bitmeyecek.
+</p>
+<button class="next" onclick="next()">Devam</button>
+</div>
+</div>
+
+<div class="slide">
+<div class="card">
+<h1>Bir Gün… 👶</h1>
+<img src="bebek.jpg">
+<p class="type">
+Belki bir gün…  
+Sen, ben ve küçük bir mucize.  
+Hayali bile kalbimi titretiyor.
+</p>
+<button class="next" onclick="next()">Devam</button>
+</div>
+</div>
+
+<div class="slide">
+<div class="card">
+<h1>Kurban Olduğum…</h1>
+<p class="type">
+Benimle bu hayatı  
+deliler gibi yaşamaya var mısın?  
+
+Sonsuza kadar benimle olur musun?
+</p>
+<button id="yes" onclick="final()">EVET 💍</button>
+<button id="no">HAYIR ☠️</button>
+</div>
+</div>
+
+<script>
+const slides=document.querySelectorAll(".slide");
+const progress=document.getElementById("progress");
+const music=document.getElementById("music");
+let i=0;
+
+function start(){
+music.volume=0.6;
+music.play();
+next();
+}
+
+function next(){
+slides[i].classList.remove("active");
+i++;
+slides[i].classList.add("active");
+progress.innerText="● ".repeat(i+1);
+typeWriter(slides[i].querySelector(".type"));
+}
+
+function final(){
+music.volume=1;
+for(let j=0;j<200;j++) spawnHeart();
+alert("SONSUZA KADAR ❤️");
+}
+
+document.getElementById("no").addEventListener("mouseover",()=>{
+no.style.left=Math.random()*80+"vw";
+no.style.top=Math.random()*80+"vh";
+});
+
+function spawnHeart(){
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.fontSize=(15+Math.random()*30)+"px";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),8000);
+}
+setInterval(spawnHeart,300);
+
+// Gün hesabı
+const startDate=new Date("2025-06-24");
+const today=new Date();
+document.getElementById("days").innerText=
+Math.floor((today-startDate)/(1000*60*60*24));
+
+// HTML UYUMLU TYPEWRITER
+function typeWriter(el){
+const html=el.innerHTML;
+el.innerHTML="";
+let i=0;
+let timer=setInterval(()=>{
+el.innerHTML=html.slice(0,i);
+i++;
+if(i>html.length) clearInterval(timer);
+},25);
+}
+</script>
+
+</body>
+</html>
